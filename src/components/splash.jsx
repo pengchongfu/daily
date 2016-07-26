@@ -36,7 +36,7 @@ export default class Splash extends React.Component {
         const url = URL.createObjectURL(blob)
         this.setState({imgUrl: url, loaded: true})
         setTimeout(()=>{
-          hashHistory.push('/homePage/gridPage')
+          hashHistory.push('/homePage')
         }, 1000)
       })
     }).catch(()=>{})

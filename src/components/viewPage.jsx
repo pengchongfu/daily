@@ -65,8 +65,10 @@ export default class ViewPage extends React.Component {
     this.state.css.href = this.state.res.css[0]
 
     const div = document.getElementsByClassName('img-place-holder')[0]
-    div.style.background = `url(${this.state.res.image}) no-repeat center center`
-    div.style.backgroundSize = 'cover'
+    if(div){
+      div.style.background = `url(${this.state.res.image}) no-repeat center center`
+      div.style.backgroundSize = 'cover'
+    }
 
     this.disableLinks()
 
