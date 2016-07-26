@@ -7,11 +7,18 @@ import HomePage from './components/homePage.jsx'
 import ViewPage from './components/viewPage.jsx'
 import GridPage from './components/gridPage.jsx'
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import myApp from './reducers'
+import reducer from './reducers'
+import thunkMiddleware from 'redux-thunk'
+import { fetchThemes } from './actions'
 
-let store = createStore(myApp)
+let store = createStore(
+  reducer,
+  applyMiddleware(
+    thunkMiddleware
+  )
+)
 
 export class App extends React.Component {
   render() {

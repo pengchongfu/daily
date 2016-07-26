@@ -5,6 +5,7 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import GridPage from './gridPage'
 import { connect } from 'react-redux'
+import { fetchThemes } from '../actions'
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -13,12 +14,11 @@ class HomePage extends React.Component {
       currentUrl: 'http://news-at.zhihu.com/api/4/news/latest',
       currentTitle: '最新消息',
       drawerOpen: false,
-      others: [],
       subscribed: []
     }
   }
   render() {
-    const menu = this.state.others.map((item, index)=>{
+    const menu = this.props.others.map((item, index)=>{
       return <MenuItem
         key={index}
         onTouchTap={()=>{
@@ -44,22 +44,15 @@ class HomePage extends React.Component {
     this.setState({drawerOpen: true})
   }
   componentDidMount() {
-    console.log('redux:'+this.props.data)
-    fetch('http://news-at.zhihu.com/api/4/themes')
-    .then((res)=>res.text())
-    .then((res)=>{
-      const response = JSON.parse(res)
-      this.setState({others: response.others})
-      this.setState({subscribed: response.subscribed})
-
-
-    })
+    this.props.dispatch(fetchThemes(this.props.lastUpdated))
   }
 }
 
 function select(state) {
   return {
-    data: state.data
+    isFetching: state.isFetching,
+    others: state.others,
+    lastUpdated: state.lastUpdated
   }
 }
 
