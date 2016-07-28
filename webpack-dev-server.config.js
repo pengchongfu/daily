@@ -5,7 +5,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports = {
   entry: {
     dev: [
-      `webpack-dev-server/client?http://localhost:8080`,
+      `webpack-dev-server/client?http://localhost:8000`,
       `webpack/hot/only-dev-server`,
     ],
     index: './src/index.jsx',
@@ -13,7 +13,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "build"),
     filename: "[name].bundle.js",
-    publicPath: `http://localhost:8080/static/`
+    publicPath: `http://localhost:8000/static/`
   },
   resolve: {
     extensions: ['', '.js', '.jsx']

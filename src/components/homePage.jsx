@@ -44,15 +44,15 @@ class HomePage extends React.Component {
     this.setState({drawerOpen: true})
   }
   componentDidMount() {
-    this.props.dispatch(fetchThemes(this.props.lastUpdated))
+    this.props.dispatch(fetchThemes(Date.now(), this.props.lastUpdated))
   }
 }
 
 function select(state) {
   return {
-    isFetching: state.isFetching,
-    others: state.others,
-    lastUpdated: state.lastUpdated
+    isFetching: state.themesData.isFetching,
+    others: state.themesData.others,
+    lastUpdated: state.themesData.lastUpdated
   }
 }
 

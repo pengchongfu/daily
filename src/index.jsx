@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Splash from './components/splash.jsx'
 import HomePage from './components/homePage.jsx'
 import ViewPage from './components/viewPage.jsx'
+import LatestPage from './components/latestPage.jsx'
 import GridPage from './components/gridPage.jsx'
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import { createStore, applyMiddleware } from 'redux'
@@ -40,7 +41,8 @@ ReactDOM.render((
       <IndexRoute component={Splash}/>
       <Route path="splash" component={Splash}/>
       <Route path="homePage" component={HomePage}>
-        <IndexRoute component={GridPage}/>
+        <IndexRoute component={LatestPage}/>
+        <Route path="latestPage" component={LatestPage}/>
         <Route path="gridPage" component={GridPage}/>
       </Route>
       <Route path="viewPage/:id" component={ViewPage}/>

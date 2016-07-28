@@ -5,12 +5,13 @@ import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 import { hashHistory } from 'react-router'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
+import { connect } from 'react-redux'
+import { fetchArticle } from '../actions'
 
-export default class ViewPage extends React.Component {
+class ViewPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      res: {},
       css: document.createElement('link'),
       dialog: false
     }
@@ -35,7 +36,7 @@ export default class ViewPage extends React.Component {
         title='返回'
         iconElementLeft={
           <IconButton onClick={()=>{
-            hashHistory.push(`/homePage/gridPage`)
+            hashHistory.push(`/homePage/latestPage`)
           }} >
           <ArrowBack />
           </IconButton>}
@@ -56,23 +57,12 @@ export default class ViewPage extends React.Component {
   componentDidMount() {
     this.state.css.rel = 'stylesheet'
     document.getElementsByTagName('head')[0].appendChild(this.state.css)
-    fetch(`http://news-at.zhihu.com/api/4/news/${this.props.params.id}`)
-    .then((res)=>res.text())
-    .then((res)=>{
-      let response = JSON.parse(res)
-      this.setState({res: response})
-    document.getElementById('web').innerHTML = this.state.res.body
-    this.state.css.href = this.state.res.css[0]
 
-    const div = document.getElementsByClassName('img-place-holder')[0]
-    if(div){
-      div.style.background = `url(${this.state.res.image}) no-repeat center center`
-      div.style.backgroundSize = 'cover'
-    }
-
-    this.disableLinks()
-
-    })
+    this.loadData(this.props.articleData[this.props.params.id])
+    this.props.dispatch(fetchArticle(this.props.articleData, this.props.params.id))
+  }
+  componentWillReceiveProps (nextProps) {
+    this.loadData(nextProps.articleData[this.props.params.id])
   }
   componentWillUnmount() {
     this.state.css.parentNode.removeChild(this.state.css)
@@ -85,5 +75,28 @@ export default class ViewPage extends React.Component {
       aAll[a].onclick = ()=>{this.handleOpen()}
     }
   }
+  loadData(res) {
+    if(!res) {
+      return
+    }
+    document.getElementById('web').innerHTML = res.body
+    this.state.css.href = res.css[0]
+
+    const div = document.getElementsByClassName('img-place-holder')[0]
+    if(div){
+      div.style.background = `url(${res.image}) no-repeat center center`
+      div.style.backgroundSize = 'cover'
+    }
+
+    this.disableLinks()
+  }
 
 }
+
+function select(state) {
+  return {
+    articleData: state.articleData
+  }
+}
+
+export default connect(select)(ViewPage)

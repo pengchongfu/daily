@@ -26,10 +26,10 @@
       (function() {
         if(process.env.HOT){
           const script = document.createElement('script');
-          script.src = 'http://localhost:8080/static/dev.bundle.js';
+          script.src = 'http://localhost:8000/static/dev.bundle.js';
         }
         const script = document.createElement('script');
-        script.src = (process.env.HOT) ? 'http://localhost:8080/static/index.bundle.js' : './build/index.bundle.js';
+        script.src = (process.env.HOT) ? 'http://localhost:8000/static/index.bundle.js' : './build/index.bundle.js';
         document.write(script.outerHTML);
       }());
     </script>
