@@ -3,18 +3,15 @@ import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
-import GridPage from './gridPage'
 import { connect } from 'react-redux'
-import { fetchThemes } from '../actions'
-
+import { fetchThemes, curState } from '../actions'
+import { hashHistory } from 'react-router'
+// todo save currentUrl in redux
 class HomePage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentUrl: 'http://news-at.zhihu.com/api/4/news/latest',
-      currentTitle: '最新消息',
-      drawerOpen: false,
-      subscribed: []
+      drawerOpen: false
     }
   }
   render() {
@@ -22,21 +19,29 @@ class HomePage extends React.Component {
       return <MenuItem
         key={index}
         onTouchTap={()=>{
-          this.setState({drawerOpen: false, currentUrl: `http://news-at.zhihu.com/api/4/theme/${item.id}`, currentTitle: item.name})
+          this.setState({drawerOpen: false})
+          this.props.dispatch(curState(item.id, item.name))
+          hashHistory.push(`/homePage/themePage/${item.id}`)
         }}
         >{item.name}</MenuItem>
     })
     return (
       <div>
-        <AppBar title={this.state.currentTitle} onLeftIconButtonTouchTap={this.openDrawer.bind(this)} style={{position: 'fixed', top: 0}}/>
+        <AppBar title={this.props.curState.curTitle} onLeftIconButtonTouchTap={this.openDrawer.bind(this)} style={{position: 'fixed', top: 0}}/>
         <Drawer open={this.state.drawerOpen} docked={false} onRequestChange={(drawerOpen)=>{this.setState({drawerOpen})}}>
         <Menu>
-          <MenuItem onTouchTap={()=>this.setState({drawerOpen: false, currentUrl: 'http://news-at.zhihu.com/api/4/news/latest', currentTitle: '最新消息'})}>最新消息</MenuItem>
+          <MenuItem
+            onTouchTap={()=>{
+              this.setState({drawerOpen: false})
+              this.props.dispatch(curState('latest', '最新消息'))
+              hashHistory.push(`/homePage/latestPage`)
+            }}
+          >最新消息</MenuItem>
           <MenuItem onTouchTap={()=>this.setState({drawerOpen: false})}>过往消息</MenuItem>
           {menu}
         </Menu>
         </Drawer>
-        {this.props.children && React.cloneElement(this.props.children, {currentUrl: this.state.currentUrl})}
+        {this.props.children}
       </div>
     )
   }
@@ -50,6 +55,7 @@ class HomePage extends React.Component {
 
 function select(state) {
   return {
+    curState: state.curState,
     isFetching: state.themesData.isFetching,
     others: state.themesData.others,
     lastUpdated: state.themesData.lastUpdated

@@ -55,6 +55,48 @@ function latestData (state = {
   }
 }
 
+function metaData (state = {
+  isFetching: false,
+  didInvalidate: false,
+  stories: [],
+  lastUpdated: 0
+}, action) {
+  switch (action.type) {
+    case 'requestThemePage':
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      })
+    case 'succedThemePage':
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        stories: action.stories,
+        background: action.background,
+        lastUpdated: action.now
+      })
+    case 'failedThemePage':
+      return Object.assign({}, state, {
+        didInvalidate: true
+      })
+    default:
+      return state
+  }
+}
+
+function themePageData (state = {}, action) {
+  switch (action.type) {
+    case 'requestThemePage':
+    case 'succedThemePage':
+    case 'failedThemePage':
+      return Object.assign({}, state, {
+        [action.id]: metaData(state[action.id], action)
+      })
+    default:
+      return state
+  }
+}
+
 function articleData (state = {}, action) {
   switch (action.type) {
     case 'succedArticle':
@@ -66,10 +108,27 @@ function articleData (state = {}, action) {
   }
 }
 
+function curState (state = {
+  curSelected: 'latest',
+  curTitle: '最新消息'
+}, action) {
+  switch (action.type) {
+    case 'setState':
+      return {
+        curSelected: action.curSelected,
+        curTitle: action.curTitle
+      }
+    default:
+      return state
+  }
+}
+
 const reducer = combineReducers({
   themesData,
   latestData,
-  articleData
+  themePageData,
+  articleData,
+  curState
 })
 
 export default reducer

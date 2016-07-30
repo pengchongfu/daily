@@ -6,13 +6,12 @@ import Splash from './components/splash.jsx'
 import HomePage from './components/homePage.jsx'
 import ViewPage from './components/viewPage.jsx'
 import LatestPage from './components/latestPage.jsx'
-import GridPage from './components/gridPage.jsx'
+import themePage from './components/themePage.jsx'
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
 import thunkMiddleware from 'redux-thunk'
-import { fetchThemes } from './actions'
 
 let store = createStore(
   reducer,
@@ -43,7 +42,7 @@ ReactDOM.render((
       <Route path="homePage" component={HomePage}>
         <IndexRoute component={LatestPage}/>
         <Route path="latestPage" component={LatestPage}/>
-        <Route path="gridPage" component={GridPage}/>
+        <Route path="themePage/:id" component={themePage}/>
       </Route>
       <Route path="viewPage/:id" component={ViewPage}/>
     </Route>

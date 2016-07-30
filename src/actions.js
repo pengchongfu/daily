@@ -40,6 +40,30 @@ export function fetchLatest(now, lastUpdated) {
   }
 }
 
+export function fetchThemePage(now, lastUpdated, id) {
+  return function (dispatch) {
+    if(now - lastUpdated < 1000 * 60 * 10 ) {
+      return
+    }
+    dispatch({
+      type: 'requestThemePage',
+      id: id
+    })
+
+    return fetch(`http://news-at.zhihu.com/api/4/theme/${id}`)
+      .then((res)=>res.json())
+      .then((res)=>{
+        dispatch({
+          type: 'succedThemePage',
+          id: id,
+          stories: res.stories,
+          background: res.background,
+          now: now
+        })
+      })
+  }
+}
+
 export function fetchArticle(state, id) {
   return function (dispatch) {
     if(state[id]) {
@@ -54,5 +78,13 @@ export function fetchArticle(state, id) {
           res: res
         })
       })
+  }
+}
+
+export function curState(selected, title) {
+  return {
+    type: 'setState',
+    curSelected: selected,
+    curTitle: title
   }
 }

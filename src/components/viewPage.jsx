@@ -36,7 +36,11 @@ class ViewPage extends React.Component {
         title='返回'
         iconElementLeft={
           <IconButton onClick={()=>{
-            hashHistory.push(`/homePage/latestPage`)
+            if (typeof this.props.curSelected === 'number') {
+              hashHistory.push(`/homePage/themePage/${this.props.curSelected}`)
+            } else {
+              hashHistory.push(`/homePage/latestPage`)
+            }
           }} >
           <ArrowBack />
           </IconButton>}
@@ -95,6 +99,7 @@ class ViewPage extends React.Component {
 
 function select(state) {
   return {
+    curSelected: state.curState.curSelected,
     articleData: state.articleData
   }
 }
