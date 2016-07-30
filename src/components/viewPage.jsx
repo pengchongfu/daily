@@ -37,8 +37,11 @@ class ViewPage extends React.Component {
         iconElementLeft={
           <IconButton onClick={()=>{
             if (typeof this.props.curSelected === 'number') {
-              hashHistory.push(`/homePage/themePage/${this.props.curSelected}`)
-            } else {
+              hashHistory.push(`/homePage/themePage`)
+            } else if (this.props.curSelected === 'before') {
+              hashHistory.push(`/homePage/beforePage`)
+            } 
+            else {
               hashHistory.push(`/homePage/latestPage`)
             }
           }} >

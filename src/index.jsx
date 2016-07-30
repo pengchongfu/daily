@@ -7,6 +7,7 @@ import HomePage from './components/homePage.jsx'
 import ViewPage from './components/viewPage.jsx'
 import LatestPage from './components/latestPage.jsx'
 import themePage from './components/themePage.jsx'
+import beforePage from './components/beforePage.jsx'
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -42,7 +43,8 @@ ReactDOM.render((
       <Route path="homePage" component={HomePage}>
         <IndexRoute component={LatestPage}/>
         <Route path="latestPage" component={LatestPage}/>
-        <Route path="themePage/:id" component={themePage}/>
+        <Route path="themePage" component={themePage}/>
+        <Route path="beforePage" component={beforePage}/>
       </Route>
       <Route path="viewPage/:id" component={ViewPage}/>
     </Route>

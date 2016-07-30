@@ -97,6 +97,30 @@ function themePageData (state = {}, action) {
   }
 }
 
+function beforeData (state = {
+  stories: []
+}, action) {
+  switch (action.type) {
+    case 'succedbeforeData':
+      return Object.assign({}, state, {
+        stories: action.stories
+      })
+    default:
+      return state
+  }
+}
+
+function beforePageData (state = {}, action) {
+  switch (action.type) {
+    case 'succedbeforeData':
+      return Object.assign({}, state, {
+        [action.date]: beforeData(state[action.date], action)
+      })
+    default:
+      return state
+  }
+}
+
 function articleData (state = {}, action) {
   switch (action.type) {
     case 'succedArticle':
@@ -108,16 +132,27 @@ function articleData (state = {}, action) {
   }
 }
 
+function getDate () {
+  let date = new Date()
+  return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
+}
+
 function curState (state = {
   curSelected: 'latest',
-  curTitle: '最新消息'
+  curTitle: '最新消息',
+  curDate: getDate()
 }, action) {
   switch (action.type) {
     case 'setState':
-      return {
+      return Object.assign({}, state, {
         curSelected: action.curSelected,
         curTitle: action.curTitle
-      }
+      })
+    case 'setDate':
+      return Object.assign({}, state, {
+        curDate: action.curDate
+      })
+      
     default:
       return state
   }
@@ -127,6 +162,7 @@ const reducer = combineReducers({
   themesData,
   latestData,
   themePageData,
+  beforePageData,
   articleData,
   curState
 })

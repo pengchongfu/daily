@@ -64,6 +64,20 @@ export function fetchThemePage(now, lastUpdated, id) {
   }
 }
 
+export function fetchbeforePage(date) {
+  return function (dispatch) {
+    return fetch(`http://news.at.zhihu.com/api/4/news/before/${date}`)
+      .then((res)=>res.json())
+      .then((res)=>{
+        dispatch({
+          type: 'succedbeforeData',
+          date: date,
+          stories: res.stories
+        })
+      })
+  }
+}
+
 export function fetchArticle(state, id) {
   return function (dispatch) {
     if(state[id]) {
@@ -86,5 +100,12 @@ export function curState(selected, title) {
     type: 'setState',
     curSelected: selected,
     curTitle: title
+  }
+}
+
+export function curDate(date) {
+  return {
+    type: 'setDate',
+    curDate: date
   }
 }

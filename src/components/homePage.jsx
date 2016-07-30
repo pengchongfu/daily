@@ -21,7 +21,7 @@ class HomePage extends React.Component {
         onTouchTap={()=>{
           this.setState({drawerOpen: false})
           this.props.dispatch(curState(item.id, item.name))
-          hashHistory.push(`/homePage/themePage/${item.id}`)
+          hashHistory.push(`/homePage/themePage`)
         }}
         >{item.name}</MenuItem>
     })
@@ -37,7 +37,13 @@ class HomePage extends React.Component {
               hashHistory.push(`/homePage/latestPage`)
             }}
           >最新消息</MenuItem>
-          <MenuItem onTouchTap={()=>this.setState({drawerOpen: false})}>过往消息</MenuItem>
+          <MenuItem
+            onTouchTap={()=>{
+              this.setState({drawerOpen: false})
+              this.props.dispatch(curState('before', '过往消息'))
+              hashHistory.push(`/homePage/beforePage`)
+            }}
+          >过往消息</MenuItem>
           {menu}
         </Menu>
         </Drawer>
