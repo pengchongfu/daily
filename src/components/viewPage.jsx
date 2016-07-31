@@ -86,8 +86,8 @@ class ViewPage extends React.Component {
     if(!res) {
       return
     }
-    document.getElementById('web').innerHTML = res.body
     this.state.css.href = res.css[0]
+    document.getElementById('web').innerHTML = res.body
 
     const div = document.getElementsByClassName('img-place-holder')[0]
     if(div){

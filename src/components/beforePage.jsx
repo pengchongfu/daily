@@ -4,6 +4,9 @@ import FlatButton from 'material-ui/FlatButton'
 import { hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { fetchbeforePage, curDate } from '../actions'
+import DatePicker from 'material-ui/DatePicker'
+import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left'
+import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right'
 
 class BeforePage extends React.Component {
   constructor(props) {
@@ -12,20 +15,34 @@ class BeforePage extends React.Component {
   render() {
     return (
       <div style={styles.root}>
-        <FlatButton
-          label="前一天"
-          primary={true}
-          onTouchTap={()=>{
-            this.getBeforeDate()
-          }}
-        />
-        <FlatButton
-          label="后一天"
-          primary={true}
-          onTouchTap={()=>{
-            this.getNextDate()
-          }}
-        />
+        <div style={styles.bar}>
+          <FlatButton
+            icon={<ChevronLeft />}
+            primary={true}
+            onTouchTap={()=>{
+              this.getBeforeDate()
+            }}
+          />
+          <DatePicker
+            hintText="选择日期"
+            value={this.parseDate(this.props.curDate)}
+            onChange={(event, date) => {
+              this.props.dispatch(curDate((date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate())))
+            }}
+            autoOk={true}
+            container="inline"
+            cancelLabel="取消"
+            maxDate={new Date()}
+          />
+          <FlatButton
+            icon={<ChevronRight/>}
+            primary={true}
+            onTouchTap={()=>{
+              this.getNextDate()
+            }}
+            disabled={this.props.curDate === this.stringDate(new Date())}
+          />
+        </div>
         <GridList
           cellHeight={300}
           cols={3}
@@ -59,19 +76,26 @@ class BeforePage extends React.Component {
     }
   }
   getBeforeDate () {
-    this.props.dispatch(curDate(this.parseDate(this.props.curDate, -1)))
+    this.props.dispatch(curDate(this.editDate(this.props.curDate, -1)))
   }
   getNextDate () {
-    this.props.dispatch(curDate(this.parseDate(this.props.curDate, 1)))
+    this.props.dispatch(curDate(this.editDate(this.props.curDate, 1)))
   }
-  parseDate (date, offset = 0) {
+  editDate (date, offset = 0) {
+    let inputDate = this.parseDate(date)
+    let outputDate =new Date(inputDate.valueOf() + offset * 24 * 60 * 60 * 1000)
+    return this.stringDate(outputDate)
+  }
+  parseDate (date) {
     let y = Math.floor(date / 10000)
     let m = Math.floor((date - y * 10000) / 100)
     let d = date - y * 10000 - m * 100
     m--
     let inputDate = new Date(y, m, d)
-    let outputDate =new Date(inputDate.valueOf() + offset * 24 * 60 * 60 * 1000)
-    return outputDate.getFullYear() * 10000 + (outputDate.getMonth() + 1) * 100 + outputDate.getDate()
+    return inputDate
+  }
+  stringDate (date) {
+    return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
   }
 }
 
@@ -80,12 +104,19 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    alignItems: 'stretch',
     marginTop: '64px'
   },
   gridList: {
     width: 930,
-    overflowY: 'auto',
+    overflowY: 'auto'
   },
+  bar: {
+    margin: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 };
 
 function select(state) {

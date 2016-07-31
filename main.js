@@ -11,6 +11,9 @@ function createWindow () {
   mainWindow.on('closed', ()=>{
     mainWindow = null
   })
+  mainWindow.webContents.on('devtools-opened', ()=>{
+    mainWindow.webContents.closeDevTools()
+  })
 }
 
 app.on('ready', createWindow)

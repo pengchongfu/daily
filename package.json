@@ -4,11 +4,14 @@
   "description": "zhihu daily desktop client.",
   "main": "main.js",
   "scripts": {
-    "build": "cross-env HOT=0 webpack -p --config webpack.config.js",
+    "build-react": "cross-env HOT=0 webpack -p --config webpack.config.js",
     "serve": "cross-env HOT=1 node devServer.js",
     "dev": "cross-env HOT=1 electron .",
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-darwin": "electron-packager . daily --ignore=node_modules --ignore=src --ignore=.git --platform=darwin --arch=x64 --version=1.2.7",
+    "build-win64": "electron-packager . daily --ignore=node_modules --ignore=src --ignore=.git --platform=win32 --arch=x64 --version=1.2.7",
+    "package": ""
   },
   "author": "",
   "license": "ISC",
