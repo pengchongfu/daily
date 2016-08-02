@@ -9,9 +9,9 @@
     "dev": "cross-env HOT=1 electron .",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-darwin": "electron-packager . daily --ignore=node_modules --ignore=src --ignore=.git --platform=darwin --arch=x64 --version=1.2.7",
+    "build-darwin": "electron-packager . daily --ignore=node_modules --ignore=src --ignore=.git --platform=darwin --arch=x64 --version=1.2.7 --icon img/zhihu.icns",
     "build-win64": "electron-packager . daily --ignore=node_modules --ignore=src --ignore=.git --platform=win32 --arch=x64 --version=1.2.7",
-    "package": ""
+    "package-darwin": "asar pack daily-darwin-x64/daily.app/Contents/Resources/app daily-darwin-x64/daily.app/Contents/Resources/app.asar && rm -rf daily-darwin-x64/daily.app/Contents/Resources/app"
   },
   "author": "",
   "license": "ISC",
