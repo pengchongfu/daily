@@ -30,8 +30,8 @@ export default class Splash extends React.Component {
     )
   }
   componentDidMount() {
-    fetch('http://news-at.zhihu.com/api/4/start-image/1080*1776').then((res)=>res.text()).then((res)=>{
-      fetch(JSON.parse(res).img).then((res)=>res.blob())
+    fetch('http://news-at.zhihu.com/api/7/prefetch-launch-images/1080*1920').then((res)=>res.text()).then((res)=>{
+      fetch(JSON.parse(res).creatives[0].url).then((res)=>res.blob())
       .then((blob)=>{
         const url = URL.createObjectURL(blob)
         this.setState({imgUrl: url, loaded: true})
